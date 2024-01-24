@@ -1,7 +1,16 @@
+import firebase_admin
+from firebase_admin import credentials
+
+cred = credentials.Certificate("credentials.json")
+firebase_admin.initialize_app(cred)
+
+#jbdsakjasdfbjñkasdfnñksfda
+
+
 
 def showMenu():
     print("Selecciona una de las opciones:")
-    print("1. Elegir Localización Favorita1")
+    print("1. Elegir Localización Favorita")
     print("2. Cambiar Localización Favorita")
     print("3. Activar Alarma")
     print("4. Modificar Alarma")
