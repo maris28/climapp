@@ -1,16 +1,17 @@
 import firebase_admin
-from firebase_admin import credentials
+from firebase_admin import credentials, firestore
 
 cred = credentials.Certificate("credentials.json")
 firebase_admin.initialize_app(cred)
 
 #jbdsakjasdfbjñkasdfnñksfda
 
+db = firestore.client()
 
 
 def showMenu():
     print("Selecciona una de las opciones:")
-    print("1. Elegir Localización Favorita")
+    print("1. Añade tu datos de meteo")
     print("2. Cambiar Localización Favorita")
     print("3. Activar Alarma")
     print("4. Modificar Alarma")
@@ -18,9 +19,24 @@ def showMenu():
     print("6. Consultar una predicción")
     print("0. Salir")
 
+def insertDate():
+    print("Introduce el nombre de la ciudad: ")
+    ciudad = input()
+    print("Introduce el estado del cielo: ")
+    cielo = input()
+    print("Introduce los grados de temperatura: ")
+    temperatura = int(input())
+    print("Introduce la cantidad de precipitación: ")
+    precipitacion  = int(input())
+    print("Introduce el día de la semana: ")
+    diaSem = input()
+    datos = {"ciudad": ciudad, "cielo": cielo, "temperatura": temperatura, "precipitacion": precipitacion, "diaSem": diaSem}
+    db.collection("meteoros").add(datos)
+
+ 
 def ejecutarOption(opcion):
     if opcion ==1:
-        chooseLocation()
+        insertDate()
     if opcion ==2:
         modifyLocation()
     if opcion ==3:
@@ -40,12 +56,12 @@ if __name__ == "__main__":
     while opcion != 0:
         showMenu()
         try:
+            insertDate()
             opcion = int(input())
         except ValueError:
             print("Opción no válida. Introduzca nuevo valor: ")
             
     
-
 
 
 
