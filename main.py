@@ -16,7 +16,7 @@ def showMenu():
     print("3. Activar Alarma")
     print("4. Modificar Alarma")
     print("5. Eliminar Alarma")
-    print("6. Consultar una predicción")
+    print("6. Consultar todas las predicciones")
     print("0. Salir")
 
 def insertDate():
@@ -31,7 +31,16 @@ def insertDate():
     print("Introduce el día de la semana: ")
     diaSem = input()
     datos = {"ciudad": ciudad, "cielo": cielo, "temperatura": temperatura, "precipitacion": precipitacion, "diaSem": diaSem}
-    db.collection("meteoros").add(datos)
+    db.collection("Meteoros").add(datos)
+
+def buscarPorCiudad():
+    print("Introduce la ciudad a consultar: ")
+    ciudad = input()
+    meteorosDb = db.collection("Meteoros")
+    query = meteorosDb.where("Ciudad", "==", ciudad)
+    docs = query.stream()
+    for doc in docs:
+        print(f"{doc.id} => {doc.to_dict()}")
 
  
 def ejecutarOption(opcion):
@@ -46,7 +55,7 @@ def ejecutarOption(opcion):
     if opcion ==5:
         deleteAlarm()
     if opcion ==6:
-        chceckPrediction()
+        buscarPorCiudad()
     if opcion == 0:
         exit()
 
@@ -56,8 +65,8 @@ if __name__ == "__main__":
     while opcion != 0:
         showMenu()
         try:
-            insertDate()
             opcion = int(input())
+            ejecutarOption(opcion)
         except ValueError:
             print("Opción no válida. Introduzca nuevo valor: ")
             
