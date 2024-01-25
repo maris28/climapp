@@ -1,5 +1,6 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
+from insertarEvento import insertDate
 
 cred = credentials.Certificate("credentials.json")
 firebase_admin.initialize_app(cred)
@@ -19,20 +20,6 @@ def showMenu():
     print("6. Consultar todas las predicciones")
     print("0. Salir")
 
-def insertDate():
-    print("Introduce el nombre de la ciudad: ")
-    ciudad = input()
-    print("Introduce el estado del cielo: ")
-    cielo = input()
-    print("Introduce los grados de temperatura: ")
-    temperatura = int(input())
-    print("Introduce la cantidad de precipitación: ")
-    precipitacion  = int(input())
-    print("Introduce el día de la semana: ")
-    diaSem = input()
-    datos = {"ciudad": ciudad, "cielo": cielo, "temperatura": temperatura, "precipitacion": precipitacion, "diaSem": diaSem}
-    db.collection("Meteoros").add(datos)
-
 def buscarPorCiudad():
     print("Introduce la ciudad a consultar: ")
     ciudad = input()
@@ -45,7 +32,7 @@ def buscarPorCiudad():
  
 def ejecutarOption(opcion):
     if opcion ==1:
-        insertDate()
+        insertDate(db)
     if opcion ==2:
         modifyLocation()
     if opcion ==3:
@@ -71,14 +58,5 @@ if __name__ == "__main__":
             print("Opción no válida. Introduzca nuevo valor: ")
             
     
-
-
-
-
-
-    
-    
-
-
 
 
