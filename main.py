@@ -1,6 +1,7 @@
 import firebase_admin
 from firebase_admin import credentials, firestore
 from insertarEvento import insertDate
+from borrar import borrarRegistros
 
 
 cred = credentials.Certificate("credentials.json")
@@ -13,6 +14,7 @@ db = firestore.client()
 
 def showMenu():
     print("Selecciona una de las opciones:")
+    print()
     print("1. Añade tu datos de meteo")
     print("2. Consulta tu predicción por ciudad")
     print("3. Modificar la predicción")
@@ -54,7 +56,7 @@ def consultarTodasLasPredicciones():
         print("\n")
         for clave, valor in datos.items():
             print(f"{clave.capitalize()}: {valor}", end=", ")
-           
+    print("\n")   
  
 def ejecutarOption(opcion):
     if opcion ==1:
@@ -64,7 +66,7 @@ def ejecutarOption(opcion):
     if opcion ==3:
         update()
     if opcion ==4:
-        borrarRegistros()
+        borrarRegistros(db)
     if opcion == 5:
         consultarTodasLasPredicciones()         
     if opcion == 0:
