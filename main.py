@@ -2,6 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from insertarEvento import insertDate
 
+
 cred = credentials.Certificate("credentials.json")
 firebase_admin.initialize_app(cred)
 
@@ -13,36 +14,55 @@ db = firestore.client()
 def showMenu():
     print("Selecciona una de las opciones:")
     print("1. Añade tu datos de meteo")
-    print("2. Cambiar Localización Favorita")
-    print("3. Activar Alarma")
-    print("4. Modificar Alarma")
-    print("5. Eliminar Alarma")
-    print("6. Consultar todas las predicciones")
+    print("2. Consulta tu predicción")
+    print("3. Modificar la predicción")
+    print("4. Borrar la predicción")    
     print("0. Salir")
 
-def buscarPorCiudad():
+def buscar():
     print("Introduce la ciudad a consultar: ")
     ciudad = input()
     meteorosDb = db.collection("Meteoros")
-    query = meteorosDb.where("Ciudad", "==", ciudad)
+    query = meteorosDb.where("ciudad", "==", ciudad)
     docs = query.stream()
     for doc in docs:
-        print(f"{doc.id} => {doc.to_dict()}")
+        print(f"{doc.to_dict()}")
 
+def update():
+    ciudad = input("Introduce la ciudad a modificar: \n")
+    try:
+        query = db.collection("Meteoros").where("Ciudad", "==", ciudad)
+        resultado = query.stream()
+        for result in resultado:
+            print(f"Documento id: {result.id}")
+            datos = result.to_dict()
+            print("Datos actuales:", datos)
+            newDay = input("Intruce nuevo valor: ")
+            datos["DiaSem"] = newDay
+            db.collection("Meteoros").document(result.id).update(datos)
+            print("Valor modificado correctamente.")
+    except Exception as e:
+        print(f"Error: {e}")
+    
+def consultarTodasLasPredicciones():
+    meteorosDb = db.collection("Meteoros")
+    docs = meteorosDb.stream()
+    for doc in docs:
+        datos = doc.to_dict()
+        print("\n")
+        for clave, valor in datos.items():
+            print(f"{clave.capitalize()}: {valor}", end=", ")
+           
  
 def ejecutarOption(opcion):
     if opcion ==1:
         insertDate(db)
     if opcion ==2:
-        modifyLocation()
+        consultarTodasLasPredicciones()
     if opcion ==3:
-        activeAlarm()
+        update()
     if opcion ==4:
-        modifyAlarm()
-    if opcion ==5:
-        deleteAlarm()
-    if opcion ==6:
-        buscarPorCiudad()
+        borrarRegistros(db)         
     if opcion == 0:
         exit()
 
