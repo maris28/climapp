@@ -62,7 +62,7 @@ def ejecutarOption(opcion):
     if opcion ==3:
         update()
     if opcion ==4:
-        borrarRegistros(db)         
+        buscar()         
     if opcion == 0:
         exit()
 
