@@ -13,6 +13,9 @@ db = firestore.client()
 
 
 def showMenu():
+    print()
+    print ("☀️","☁️","⛈️", " BIENVENIDOS A CLIMAPP", "⛈️","☁️","☀️")
+    print()        
     print("Selecciona una de las opciones:")
     print()
     print("1. Añade tu datos de meteo")
