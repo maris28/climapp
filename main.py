@@ -14,9 +14,10 @@ db = firestore.client()
 def showMenu():
     print("Selecciona una de las opciones:")
     print("1. Añade tu datos de meteo")
-    print("2. Consulta tu predicción")
+    print("2. Consulta tu predicción por ciudad")
     print("3. Modificar la predicción")
-    print("4. Borrar la predicción")    
+    print("4. Borrar la predicción")
+    print("5. Mostrar todos los datos")    
     print("0. Salir")
 
 def buscar():
@@ -31,14 +32,15 @@ def buscar():
 def update():
     ciudad = input("Introduce la ciudad a modificar: \n")
     try:
-        query = db.collection("Meteoros").where("Ciudad", "==", ciudad)
+        query = db.collection("Meteoros").where("ciudad", "==", ciudad)
         resultado = query.stream()
+        
         for result in resultado:
             print(f"Documento id: {result.id}")
             datos = result.to_dict()
             print("Datos actuales:", datos)
             newDay = input("Intruce nuevo valor: ")
-            datos["DiaSem"] = newDay
+            datos["diaSem"] = newDay
             db.collection("Meteoros").document(result.id).update(datos)
             print("Valor modificado correctamente.")
     except Exception as e:
@@ -58,11 +60,13 @@ def ejecutarOption(opcion):
     if opcion ==1:
         insertDate(db)
     if opcion ==2:
-        consultarTodasLasPredicciones()
+        buscar()
     if opcion ==3:
         update()
     if opcion ==4:
-        buscar()         
+        borrarRegistros()
+    if opcion == 5:
+        consultarTodasLasPredicciones()         
     if opcion == 0:
         exit()
 
